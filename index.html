@@ -10,6 +10,8 @@
     <button onclick="sendMessage()">Отправить</button>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+      var openaiApiKey = kays.env.OPENAI_API_KEY;
+
       function sendMessage() {
         var userInput = document.getElementById("user-input");
         var message = userInput.value;
@@ -22,8 +24,6 @@
       }
 
       function botResponse(input) {
-        var openaiApiKey = "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";
-
         $.ajax({
           type: "POST",
           url: "https://api.openai.com/v1/engines/davinci-codex/completions",
