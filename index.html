@@ -5,71 +5,57 @@
     <title>Мой чат</title>
   </head>
   <body>
-    <div id="chat"></div>
-    <input type="text" id="userInput">
+    <div id="chat-box"></div>
+    <input type="text" id="user-input">
     <button onclick="sendMessage()">Отправить</button>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
       function sendMessage() {
-  var userInput = document.getElementById("userInput");
-  var message = userInput.value;
+        var userInput = document.getElementById("user-input");
+        var message = userInput.value;
 
-  // вызываем функцию botResponse() и сохраняем результат в переменной response
-  var response = botResponse();
+        // вызываем функцию botResponse() и сохраняем результат в переменной response
+        botResponse(message);
 
-  // отображаем ответ в чате
-  var chat = document.getElementById("chat");
-  chat.innerHTML += "<p><strong>Вы:</strong> " + message + "</p>";
-  chat.innerHTML += "<p><strong>Бот:</strong> " + response + "</p>";
-
-  // очищаем поле ввода
-  userInput.value = "";
-}
-
-function botResponse() {
-  let input = $("#userInput").val();
-
-  $.ajax({
-    type: "POST",
-    url: "https://api.openai.com/v1/engines/davinci-codex/completions",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer sk-...vrCJ",
-    },
-    data: JSON.stringify({
-      prompt: "User: " + input + "\nBot:",
-      max_tokens: 50,
-      temperature: 0.5,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-    }),
-    success: function (data) {
-      let response = data.choices[0].text.trim();
-      if (!response) {
-        response = "I'm sorry, I'm not sure what you're asking.";
-      }
-      $("#chat-box").append(
-        '<div class="chat-message"><span class="chat-message-name">Bot:</span>' +
-          response +
-          "</div>"
-      );
-      $("#userInput").val("");
-    },
-    error: function () {
-      $("#chat-box").append(
-        '<div class="chat-message"><span class="chat-message-name">Bot:</span>Oops! Something went wrong.</div>'
-      );
-      $("#userInput").val("");
-    },
-  });
-}
-        // отображаем ответ в чате
-        var chat = document.getElementById("chat");
-        chat.innerHTML += "<p><strong>Вы:</strong> " + message + "</p>";
-        chat.innerHTML += "<p><strong>Бот:</strong> " + response + "</p>";
         // очищаем поле ввода
         userInput.value = "";
+      }
+
+      function botResponse(input) {
+        $.ajax({
+          type: "POST",
+          url: "https://api.openai.com/v1/engines/davinci-codex/completions",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer sk-...vrCJ",
+          },
+          data: JSON.stringify({
+            prompt: "User: " + input + "\nBot:",
+            max_tokens: 50,
+            temperature: 0.5,
+            top_p: 1,
+            frequency_penalty: 0,
+            presence_penalty: 0,
+          }),
+          success: function (data) {
+            let response = data.choices[0].text.trim();
+            if (!response) {
+              response = "I'm sorry, I'm not sure what you're asking.";
+            }
+            $("#chat-box").append(
+              '<div class="chat-message"><span class="chat-message-name">Bot:</span>' +
+                response +
+                "</div>"
+            );
+          },
+          error: function () {
+            $("#chat-box").append(
+              '<div class="chat-message"><span class="chat-message-name">Bot:</span>Oops! Something went wrong.</div>'
+            );
+          },
+        });
       }
     </script>
   </body>
 </html>
+
