@@ -5,7 +5,7 @@
     <title>Мой чат</title>
   </head>
   <body>
-    <div id="chat-box"></div>
+    <div id="chat"></div>
     <input type="text" id="user-input">
     <button onclick="sendMessage()">Отправить</button>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -42,10 +42,10 @@
             if (!response) {
               response = "I'm sorry, I'm not sure what you're asking.";
             }
-            $("#chat-box").append(
+            $("#chat").append(
               '<div class="chat-message"><span class="chat-message-name">Bot:</span>' +
-                response +
-                "</div>"
+               response +
+               "</div>"
             );
           },
           error: function () {
