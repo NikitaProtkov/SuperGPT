@@ -10,13 +10,23 @@
     <button onclick="sendMessage()">Отправить</button>
     <script>
       function sendMessage() {
-        var userInput = document.getElementById("userInput");
-        var message = userInput.value;
-        // отправляем сообщение на сервер и получаем ответ
-        // здесь нужно использовать AJAX или WebSocket для отправки запроса на сервер
-        // и получения ответа в формате JSON
-        var response = function botResponse() {
-  let input = $("#chat-input").val();
+  var userInput = document.getElementById("userInput");
+  var message = userInput.value;
+
+  // вызываем функцию botResponse() и сохраняем результат в переменной response
+  var response = botResponse();
+
+  // отображаем ответ в чате
+  var chat = document.getElementById("chat");
+  chat.innerHTML += "<p><strong>Вы:</strong> " + message + "</p>";
+  chat.innerHTML += "<p><strong>Бот:</strong> " + response + "</p>";
+
+  // очищаем поле ввода
+  userInput.value = "";
+}
+
+function botResponse() {
+  let input = $("#userInput").val();
 
   $.ajax({
     type: "POST",
@@ -43,13 +53,15 @@
           response +
           "</div>"
       );
-      $("#chat-input").val("");
+      $("#userInput").val("");
+      return response; // возвращаем значение response
     },
     error: function () {
       $("#chat-box").append(
         '<div class="chat-message"><span class="chat-message-name">Bot:</span>Oops! Something went wrong.</div>'
       );
-      $("#chat-input").val("");
+      $("#userInput").val("");
+      return ""; // возвращаем пустую строку в случае ошибки
     },
   });
 }
