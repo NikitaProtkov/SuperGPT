@@ -54,14 +54,12 @@ function botResponse() {
           "</div>"
       );
       $("#userInput").val("");
-      return response; // возвращаем значение response
     },
     error: function () {
       $("#chat-box").append(
         '<div class="chat-message"><span class="chat-message-name">Bot:</span>Oops! Something went wrong.</div>'
       );
       $("#userInput").val("");
-      return ""; // возвращаем пустую строку в случае ошибки
     },
   });
 }
