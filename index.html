@@ -1,104 +1,59 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <title>Загрузка и просмотр изображений с звуком</title>
+    <title>Пример проигрывателя YouTube</title>
     <style>
-      /* Стили для области загрузки */
-      .upload-container {
-        border: 2px dashed gray;
-        padding: 10px;
-        text-align: center;
-      }
-      /* Стили для изображений */
-      .image-container {
-        display: inline-block;
-        margin: 10px;
-        width: 200px;
-        height: 200px;
-        overflow: hidden;
+      /* Стили для контейнера проигрывателя */
+      .player-container {
         position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
       }
-      .image-container img {
-        max-width: 100%;
-        max-height: 100%;
-      }
-      /* Стили для аудио-элемента */
-      .audio-element {
+      
+      /* Стили для видео-плеера */
+      .player-container iframe {
         position: absolute;
         top: 0;
         left: 0;
-        opacity: 0;
+        width: 100%;
+        height: 100%;
       }
     </style>
   </head>
   <body>
-    <h1>Загрузка и просмотр изображений с звуком</h1>
-    <!-- Область для загрузки изображений -->
-    <div class="upload-container">
-      <input type="file" id="file-input" multiple>
-      <br>
-      <button id="upload-button">Загрузить</button>
-    </div>
-    <!-- Контейнер для изображений -->
-    <div id="image-gallery"></div>
-    <!-- Скрипт для загрузки и отображения изображений с звуком -->
+    <h1>Пример проигрывателя YouTube</h1>
+    <p>Введите ссылку на видео ниже:</p>
+    <input type="text" id="video-link" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+    <button onclick="playVideo()">Воспроизвести</button>
+    <div class="player-container" id="player-container"></div>
+    
     <script>
-      // Получение элементов DOM
-      const fileInput = document.getElementById('file-input');
-      const uploadButton = document.getElementById('upload-button');
-      const imageGallery = document.getElementById('image-gallery');
-      const audioFile = 'path/to/sound.mp3'; // путь к звуковому файлу
-      
-      // Обработка клика на кнопку загрузки
-      uploadButton.addEventListener('click', function() {
-        // Получение списка файлов
-        const files = fileInput.files;
+      function playVideo() {
+        const videoLink = document.getElementById('video-link').value;
+        const container = document.getElementById('player-container');
         
-        // Создание объекта FileReader
-        const reader = new FileReader();
+        // Очищаем контейнер проигрывателя
+        container.innerHTML = '';
         
-        // Обработка события загрузки изображения
-        reader.addEventListener('load', function(event) {
-          // Создание элемента изображения
-          const img = document.createElement('img');
-          img.src = event.target.result;
-          
-          // Создание контейнера для изображения
-          const container = document.createElement('div');
-          container.className = 'image-container';
-          container.appendChild(img);
-          
-          // Создание аудио-элемента для звука
-          const audio = document.createElement('audio');
-          audio.src = audioFile;
-          audio.className = 'audio-element';
-          
-          // Добавление аудио-элемент
-      container.appendChild(audio);
-      
-      // Обработка события загрузки аудио
-      audio.addEventListener('canplaythrough', function() {
-        // Воспроизведение звука
-        audio.play();
-      });
-      
-      // Добавление контейнера в галерею изображений
-      imageGallery.appendChild(container);
-    });
-    
-    // Обработка ошибок при загрузке изображения
-    reader.addEventListener('error', function(event) {
-      console.error('Ошибка при загрузке изображения:', event.target.error);
-    });
-    
-    // Загрузка изображений
-    for (const file of files) {
-      if (file.type.match('image.*')) {
-        reader.readAsDataURL(file);
+        // Создаем iframe для проигрывания видео
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${getVideoId(videoLink)}`;
+        iframe.frameborder = '0';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowfullscreen = true;
+        
+        // Добавляем iframe в контейнер проигрывателя
+        container.appendChild(iframe);
       }
-    }
-  });
-</script>
-</body>
+      
+      // Функция для получения ID видео из ссылки
+      function getVideoId(link) {
+        const videoIdRegex = /(?:\?v=|&v=|youtu\.be\/)(.*?)(?:\?|$)/;
+        const match = link.match(videoIdRegex);
+        
+        return match ? match[1] : '';
+      }
+    </script>
+  </body>
 </html>
