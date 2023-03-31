@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Chat Form</title>
+    <title>Real-time chat</title>
     <style>
       #chat-form {
         display: flex;
@@ -43,8 +43,6 @@
   </head>
   <body>
     <div id="chat-form">
-      <label for="username">Username:</label>
-      <input type="text" id="username" />
       <textarea id="message" placeholder="Type your message"></textarea>
       <input type="submit" value="Send" onclick="sendMessage()" />
     </div>
@@ -56,30 +54,19 @@
       var socket = io();
 
       function sendMessage() {
-        var username = document.getElementById("username").value;
         var message = document.getElementById("message").value;
         var chatMessages = document.getElementById("chat-messages");
 
-        if (username !== "" && message !== "") {
-          socket.emit("chat message", username, message);
+        if (message !== "") {
+          socket.emit("chat message", message);
           document.getElementById("message").value = "";
         }
       }
 
-      socket.on("chat message", function (username, message) {
+      socket.on("chat message", function (message) {
         var chatMessage = document.createElement("div");
-        chatMessage.innerHTML = "<strong>" + username + ":</strong> " + message;
+        chatMessage.innerHTML = message;
         chatMessages.appendChild(chatMessage);
-      });
-
-      socket.on("all messages", function (messages) {
-        var chatMessages = document.getElementById("chat-messages");
-
-        messages.forEach(function (message) {
-          var chatMessage = document.createElement("div");
-          chatMessage.innerHTML = "<strong>" + message.username + ":</strong> " + message.message;
-          chatMessages.appendChild(chatMessage);
-        });
       });
     </script>
   </body>
