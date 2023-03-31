@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Real-time chat</title>
+    <title>Chat Form</title>
     <style>
       #chat-form {
         display: flex;
@@ -11,16 +11,11 @@
         margin-top: 50px;
       }
 
-      input[type="text"] {
-        padding: 10px;
-        margin-bottom: 10px;
-        width: 300px;
-      }
-
       textarea {
         padding: 10px;
         width: 300px;
         height: 200px;
+        margin-bottom: 10px;
       }
 
       input[type="submit"] {
@@ -52,20 +47,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script>
       var socket = io();
+      var chatMessages = document.getElementById("chat-messages");
 
       function sendMessage() {
-        var message = document.getElementById("message").value;
-        var chatMessages = document.getElementById("chat-messages");
-
+        var message = document.getElementById("message").value.trim();
         if (message !== "") {
-          socket.emit("chat message", message);
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/send-message", true);
+          xhr.setRequestHeader(
+            "Content-type",
+            "application/x-www-form-urlencoded"
+          );
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              var chatMessage = document.createElement("div");
+              chatMessage.innerHTML = xhr.responseText;
+              chatMessages.appendChild(chatMessage);
+            }
+          };
+          xhr.send("message=" + message);
           document.getElementById("message").value = "";
         }
       }
 
-      socket.on("chat message", function (message) {
+      socket.on("chat message", function (username, message) {
         var chatMessage = document.createElement("div");
-        chatMessage.innerHTML = message;
+        chatMessage.innerHTML = "<strong>" + username + ":</strong> " + message;
         chatMessages.appendChild(chatMessage);
       });
     </script>
