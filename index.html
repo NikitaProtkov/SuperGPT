@@ -1,79 +1,73 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Chat Form</title>
+    <meta charset="UTF-8">
+    <title>Загрузка и просмотр изображений</title>
     <style>
-      #chat-form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 50px;
-      }
-
-      textarea {
+      /* Стили для области загрузки */
+      .upload-container {
+        border: 2px dashed gray;
         padding: 10px;
-        width: 300px;
+        text-align: center;
+      }
+      /* Стили для изображений */
+      .image-container {
+        display: inline-block;
+        margin: 10px;
+        width: 200px;
         height: 200px;
-        margin-bottom: 10px;
+        overflow: hidden;
       }
-
-      input[type="submit"] {
-        padding: 10px;
-        background-color: #428bca;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-      }
-
-      #chat-messages {
-        margin-top: 50px;
-        width: 600px;
-        height: 400px;
-        overflow-y: scroll;
-        border: 1px solid #ccc;
-        padding: 10px;
+      .image-container img {
+        max-width: 100%;
+        max-height: 100%;
       }
     </style>
   </head>
   <body>
-    <div id="chat-form">
-      <textarea id="message" placeholder="Type your message"></textarea>
-      <input type="submit" value="Send" onclick="sendMessage()" />
+    <h1>Загрузка и просмотр изображений</h1>
+    <!-- Область для загрузки изображений -->
+    <div class="upload-container">
+      <input type="file" id="file-input" multiple>
+      <br>
+      <button id="upload-button">Загрузить</button>
     </div>
-
-    <div id="chat-messages"></div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <!-- Контейнер для изображений -->
+    <div id="image-gallery"></div>
+    <!-- Скрипт для загрузки и отображения изображений -->
     <script>
-      var socket = io();
-      var chatMessages = document.getElementById("chat-messages");
-
-      function sendMessage() {
-        var message = document.getElementById("message").value.trim();
-        if (message !== "") {
-          var xhr = new XMLHttpRequest();
-          xhr.open("POST", "/send-message", true);
-          xhr.setRequestHeader(
-            "Content-type",
-            "application/x-www-form-urlencoded"
-          );
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-              var chatMessage = document.createElement("div");
-              chatMessage.innerHTML = xhr.responseText;
-              chatMessages.appendChild(chatMessage);
-            }
-          };
-          xhr.send("message=" + message);
-          document.getElementById("message").value = "";
+      // Получение элементов DOM
+      const fileInput = document.getElementById('file-input');
+      const uploadButton = document.getElementById('upload-button');
+      const imageGallery = document.getElementById('image-gallery');
+      
+      // Обработка клика на кнопку загрузки
+      uploadButton.addEventListener('click', function() {
+        // Получение списка файлов
+        const files = fileInput.files;
+        
+        // Создание объекта FileReader
+        const reader = new FileReader();
+        
+        // Обработка события загрузки изображения
+        reader.addEventListener('load', function(event) {
+          // Создание элемента изображения
+          const img = document.createElement('img');
+          img.src = event.target.result;
+          
+          // Создание контейнера для изображения
+          const container = document.createElement('div');
+          container.className = 'image-container';
+          container.appendChild(img);
+          
+          // Добавление контейнера в галерею
+          imageGallery.appendChild(container);
+        });
+        
+        // Чтение каждого файла и загрузка его содержимого
+        for (let i = 0; i < files.length; i++) {
+          reader.readAsDataURL(files[i]);
         }
-      }
-
-      socket.on("chat message", function (username, message) {
-        var chatMessage = document.createElement("div");
-        chatMessage.innerHTML = "<strong>" + username + ":</strong> " + message;
-        chatMessages.appendChild(chatMessage);
       });
     </script>
   </body>
