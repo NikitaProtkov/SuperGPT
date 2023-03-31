@@ -71,6 +71,16 @@
         chatMessage.innerHTML = "<strong>" + username + ":</strong> " + message;
         chatMessages.appendChild(chatMessage);
       });
+
+      socket.on("all messages", function (messages) {
+        var chatMessages = document.getElementById("chat-messages");
+
+        messages.forEach(function (message) {
+          var chatMessage = document.createElement("div");
+          chatMessage.innerHTML = "<strong>" + message.username + ":</strong> " + message.message;
+          chatMessages.appendChild(chatMessage);
+        });
+      });
     </script>
   </body>
 </html>
