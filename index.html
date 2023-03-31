@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chat Form</title>
+    <style>
+      #chat-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        margin-bottom: 10px;
+        width: 300px;
+      }
+
+      textarea {
+        padding: 10px;
+        width: 300px;
+        height: 200px;
+      }
+
+      input[type="submit"] {
+        padding: 10px;
+        background-color: #428bca;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+
+      #chat-messages {
+        margin-top: 50px;
+        width: 600px;
+        height: 400px;
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chat-form">
+      <label for="user1">User 1:</label>
+      <input type="text" id="user1" />
+      <label for="user2">User 2:</label>
+      <input type="text" id="user2" />
+      <textarea id="message" placeholder="Type your message"></textarea>
+      <input type="submit" value="Send" onclick="sendMessage()" />
+    </div>
+
+    <div id="chat-messages"></div>
+
+    <script>
+      function sendMessage() {
+        var user1 = document.getElementById("user1").value;
+        var user2 = document.getElementById("user2").value;
+        var message = document.getElementById("message").value;
+        var chatMessages = document.getElementById("chat-messages");
+
+        if (user1 !== "" && user2 !== "" && message !== "") {
+          var chatMessage = document.createElement("div");
+          chatMessage.innerHTML = "<strong>" + user1 + ":</strong> " + message;
+          chatMessages.appendChild(chatMessage);
+          document.getElementById("message").value = "";
+        }
+      }
+    </script>
+  </body>
+</html>
