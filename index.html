@@ -1,58 +1,110 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Пример проигрывателя YouTube</title>
+    <meta charset="UTF-8">
+    <title>Чат-бот</title>
     <style>
-      /* Стили для контейнера проигрывателя */
-      .player-container {
-        position: relative;
-        padding-bottom: 56.25%;
-        height: 0;
+      .chat {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        height: 400px;
+        width: 400px;
+        margin: 20px auto;
         overflow: hidden;
+        position: relative;
       }
-      
-      /* Стили для видео-плеера */
-      .player-container iframe {
+
+      .messages {
+        height: calc(100% - 50px);
+        overflow: auto;
+        padding: 10px;
+      }
+
+      .input {
         position: absolute;
-        top: 0;
+        bottom: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        background-color: #eee;
+        padding: 10px;
+      }
+
+      .input input {
+        width: calc(100% - 70px);
+        padding: 5px;
+        border: none;
+        border-radius: 5px;
+        margin-right: 5px;
+      }
+
+      .input button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .message {
+        margin-bottom: 10px;
+      }
+
+      .message.user {
+        background-color: #eee;
+        border-radius: 5px 5px 5px 0;
+        padding: 10px;
+        float: right;
+        clear: both;
+      }
+
+      .message.bot {
+        background-color: #ccc;
+        border-radius: 5px 5px 0 5px;
+        padding: 10px;
+        float: left;
+        clear: both;
       }
     </style>
   </head>
   <body>
-    <h1>Пример проигрывателя YouTube</h1>
-    <p>Введите ссылку на видео ниже:</p>
-    <input type="text" id="video-link" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-    <button onclick="playVideo()">Воспроизвести</button>
-    <div class="player-container" id="player-container"></div>
-    
+    <div class="chat">
+      <div class="messages"></div>
+      <div class="input">
+        <input type="text" placeholder="Напишите сообщение...">
+        <button>Отправить</button>
+      </div>
+    </div>
+
     <script>
-      function playVideo() {
-        const videoLink = document.getElementById('video-link').value;
-        const container = document.getElementById('player-container');
-        
-        // Очищаем контейнер проигрывателя
-        container.innerHTML = '';
-        
-        // Создаем iframe для проигрывания видео
-        const iframe = document.createElement('iframe');
-        iframe.src = `https://www.youtube.com/embed/${getVideoId(videoLink)}`;
-        iframe.frameborder = '0';
-        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-        iframe.allowfullscreen = true;
-        
-        // Добавляем iframe в контейнер проигрывателя
-        container.appendChild(iframe);
+      const messages = document.querySelector('.messages');
+      const input = document.querySelector('.input input');
+      const button = document.querySelector('.input button');
+
+      button.addEventListener('click', sendMessage);
+
+      function sendMessage() {
+        const text = input.value;
+        const message = createMessage(text);
+        messages.appendChild(message);
+        input.value = '';
+        setTimeout(() => {
+          const replyText = generateReply(text);
+          const reply = createMessage(replyText, 'bot');
+          messages.appendChild(reply);
+        }, 1000);
       }
-      
-      // Функция для получения ID видео из ссылки
-      function getVideoId(link) {
-        const videoIdRegex = /(?:\?v=|&v=|youtu\.be\/)(.*?)(?:\?|$)/;
-        const match = link.match(videoIdRegex);
-        
-        return match ? match[1] : '';
+
+      function createMessage(text, sender = 'user') {
+        const message = document.createElement('div');
+        message.classList.add('message', sender);
+        message.textContent = text;
+        return message;
+      }
+
+      function generateReply(text) {
+        // Реализуйте здесь логику обработки сообщений и генерации ответов
+        return 'Извините, я не понимаю ваш вопрос. Попробуйте задать его по-другому.';
       }
     </script>
   </body>
