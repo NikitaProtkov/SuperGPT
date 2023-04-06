@@ -1,139 +1,160 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
 	<title>Магазин видеокарт</title>
 	<style>
-		/* Стили для страницы */
-		body {
-			font-family: Arial, sans-serif;
-			margin: 0;
-			padding: 0;
+		/* Стили для переключателей вкладок */
+		.tabs input[type="radio"] {
+			display: none;
 		}
-		
-		header {
-			background-color: #333;
-			color: #fff;
-			padding: 10px;
-			text-align: center;
-		}
-		
-		nav {
-			background-color: #f1f1f1;
-			padding: 10px;
-		}
-		
-		nav ul {
-			list-style: none;
-			margin: 0;
-			padding: 0;
-		}
-		
-		nav li {
+		.tabs label {
 			display: inline-block;
-			margin-right: 10px;
+			padding: 6px 12px;
+			margin: 0 -5px;
+			border-radius: 6px 6px 0 0;
+			font-size: 20px;
+			font-weight: bold;
+			color: #444;
+			background-color: #DDD;
+			cursor: pointer;
+			position: relative;
+			top: 1px;
+			-webkit-transition: background-color 0.2s;
+			-moz-transition: background-color 0.2s;
+			transition: background-color 0.2s;
 		}
-		
-		nav a {
-			color: #333;
-			text-decoration: none;
-			padding: 5px;
+		.tabs label:hover {
+			background-color: #CCC;
 		}
-		
-		nav a:hover {
-			background-color: #ddd;
+		.tabs input[type="radio"]:checked + label {
+			background-color: #FFF;
+			color: #000;
+			border-bottom: 2px solid #FFF;
+			top: 0;
+			padding-top: 8px;
 		}
-		
-		main {
-			padding: 10px;
+
+		/* Стили для контейнера вкладок */
+		.tabs .tab-content {
+			display: none;
+			padding: 20px;
+			background-color: #FFF;
+			border-radius: 0 6px 6px 6px;
+			border-top: 2px solid #FFF;
 		}
-		
-		section {
-			margin-bottom: 20px;
-		}
-		
-		h2 {
-			margin-top: 0;
-		}
-		
-		ul {
-			list-style: none;
-			margin: 0;
-			padding: 0;
-		}
-		
-		li {
-			display: inline-block;
-			margin-right: 10px;
-			text-align: center;
-			width: 30%;
-		}
-		
-		img {
-			display: block;
-			margin: 0 auto;
+		.tabs .tab-content img {
 			max-width: 100%;
 			height: auto;
 		}
-		
-		h3 {
-			margin-top: 0;
+
+		/* Стили для списка видеокарт */
+		.card-list {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
 		}
-		
-		footer {
-			background-color: #333;
-			color: #fff;
-			padding: 10px;
+		.card-list li {
+			width: calc(33.33% - 20px);
+			margin-bottom: 20px;
+			padding: 20px;
+			background-color: #FFF;
+			border-radius: 6px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
 			text-align: center;
+		}
+		.card-list img {
+			max-width: 100%;
+			height: auto;
 		}
 	</style>
 </head>
 <body>
 	<header>
-		<h1>Добро пожаловать в наш магазин видеокарт</h1>
+		<h1>Магазин видеокарт</h1>
 	</header>
 
-	<nav>
-		<ul>
-			<li><a href="#home">Главная</a></li>
-			<li><a href="#products">Товары</a></li>
-			<li><a href="#about">О нас</a></li>
+	<main class="tabs">
+		<input id="tab1" type="radio" name="tabs" checked>
+		<label for="tab1">Главная</label>
+		<section class="tab-content">
+			<p>Добро пожаловать в наш магазин видеокарт!</p>
+			<p>Мы предлагаем широкий выбор видеокарт от ведущих производителей по привлекательным ценам.</p>
+			<p>Переключайтесь на другие вкладки, чтобы узнать больше.</p>
+	</section>
+
+	<input id="tab2" type="radio" name="tabs">
+	<label for="tab2">Товары</label>
+	<section class="tab-content">
+		<ul class="card-list">
+			<li>
+				<img src="https://picsum.photos/300/200" alt="Видеокарта 1">
+				<h2>Видеокарта 1</h2>
+				<p>Цена: $300</p>
+			</li>
+			<li>
+				<img src="https://picsum.photos/300/200" alt="Видеокарта 2">
+				<h2>Видеокарта 2</h2>
+				<p>Цена: $400</p>
+			</li>
+			<li>
+				<img src="https://picsum.photos/300/200" alt="Видеокарта 3">
+				<h2>Видеокарта 3</h2>
+				<p>Цена: $500</p>
+			</li>
+			<li>
+				<img src="https://picsum.photos/300/200" alt="Видеокарта 4">
+				<h2>Видеокарта 4</h2>
+				<p>Цена: $600</p>
+			</li>
+			<li>
+				<img src="https://picsum.photos/300/200" alt="Видеокарта 5">
+				<h2>Видеокарта 5</h2>
+				<p>Цена: $700</p>
+			</li>
+			<li>
+				<img src="https://picsum.photos/300/200" alt="Видеокарта 6">
+				<h2>Видеокарта 6</h2>
+				<p>Цена: $800</p>
+			</li>
 		</ul>
-	</nav>
+	</section>
 
-	<main>
-		<section id="home">
-			<p>У нас вы найдете широкий выбор видеокарт от ведущих производителей по доступной цене.</p>
-		</section>
+	<input id="tab3" type="radio" name="tabs">
+	<label for="tab3">О нас</label>
+	<section class="tab-content">
+		<p>Мы - компания, которая занимается продажей качественных видеокарт.</p>
+		<p>Мы заботимся о качестве нашей продукции и о том, чтобы наши клиенты были всегда довольны.</p>
+		<p>Мы уверены, что Вы найдете у нас то, что ищете.</p>
+	</section>
+</main>
 
-		<section id="products">
-			<h2>Видеокарты</h2>
-			<ul>
-				<li>
-					<img src="gpu1.jpg" alt="NVIDIA GeForce RTX 3080">
-					<h3>NVIDIA GeForce RTX 3080</h3>
-					<p>Цена: $999</p>
-				</li>
-				<li>
-					<img src="gpu2.jpg" alt="AMD Radeon RX 6800 XT">
-					<h3>AMD Radeon RX 6800 XT</h3>
-					<p>Цена: $899</p>
-				</li>
-								<li>
-					<img src="gpu3.jpg" alt="ASUS ROG Strix GeForce RTX 3070">
-					<h3>ASUS ROG Strix GeForce RTX 3070</h3>
-					<p>Цена: $749</p>
-				</li>
-			</ul>
-		</section>
+<footer>
+	<p>Магазин видеокарт &copy; 2023</p>
+</footer>
 
-		<section id="about">
-			<h2>О нас</h2>
-			<p>Мы являемся одним из лучших магазинов видеокарт в городе. У нас работают только профессионалы, которые помогут вам выбрать лучшую видеокарту для ваших потребностей.</p>
-		</section>
-	</main>
-
-	<footer>
-		<p>Магазин видеокарт &copy; 2023</p>
-	</footer>
+<script>
+	// Получаем все переключатели вкладок
+	const tabs = document.querySelectorAll('.tabs input[type="radio"]');
+	// Добавляем обработчик для каждого переключателя
+	tabs.forEach(tab => {
+		tab.addEventListener('change', () => {
+			// Получаем контейнер с содержимым текущей вкладки
+			const tabContent = tab.parentNode.querySelector('.tab-content');
+			// Получаем все контейнеры с содержимым вкладок
+			const tabContents = document.querySelectorAll('.tab-content');
+			// Скрываем все контейнеры
+						tabContents.forEach(content => {
+				content.style.display = 'none';
+			});
+			// Отображаем контейнер текущей вкладки
+			tabContent.style.display = 'block';
+		});
+	});
+</script>
 </body>
 </html>
+
